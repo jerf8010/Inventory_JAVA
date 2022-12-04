@@ -2,8 +2,8 @@ package connection_db;
 import java.sql.*;
 
 public class Connect {
-    public static Connection connect(){
-        Connection c = null;
+    private static Connection c = null;
+    public static Connection connect() throws Exception{
         try {
             Class.forName("org.sqlite.JDBC");
         }catch(Exception e1){
@@ -12,7 +12,16 @@ public class Connect {
         
         try {
            System.out.println("Connecting with database...");
-           c = DriverManager.getConnection("jdbc:sqlite:./db/db_inventario.db");
+           if (c == null){
+            System.out.println("There are not any connection");
+            c = DriverManager.getConnection("jdbc:sqlite:./db/db_inventario.db");
+            System.out.println("Connection ready");
+           }else{
+            System.out.println("Previous Connection: " + c);
+            c.close();
+            c = DriverManager.getConnection("jdbc:sqlite:./db/db_inventario.db");
+            System.out.println("Connection ready");
+           }
            DatabaseMetaData meta = c.getMetaData();  
            System.out.println("The driver name is " + meta.getDriverName()); 
            System.out.println("The connection is " + c); 
