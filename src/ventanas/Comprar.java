@@ -1,4 +1,6 @@
 package ventanas;
+import connection_db.BuscarProducto;
+import connection_db.EditarProducto;
 import connection_db.InsertProduct;
 
 import javax.swing.*;
@@ -73,6 +75,51 @@ public class Comprar extends JFrame implements ActionListener{
            if(ID.equals("")){
              JOptionPane.showMessageDialog(null, "Debes registrar id.");
            } else {
+              BuscarProducto buscar = new BuscarProducto();
+              String [] result = buscar.buscar(ID);
+              String [] emptyArr = {};
+              if( result == emptyArr){
+                JOptionPane.showMessageDialog(null, "Producto no encontrado.");
+              }else{
+                try{
+                  Float precio, precioFinal;
+                  Integer cantidadComprada, existencia, existenciaFinal;
+                  precio = Float.parseFloat(result[2]);
+                  existencia = Integer.parseInt(result[5]);
+                  if (textfield2.getText().trim().equals("")){
+                    JOptionPane.showMessageDialog(null, "Debe ingresar una cantidad correcta de producto a comprar.");
+
+                  }else{
+                    cantidadComprada = Integer.parseInt(textfield2.getText().trim());
+                    precioFinal = precio * cantidadComprada;
+                    existenciaFinal = cantidadComprada + existencia;
+
+                    Object[] possibleValues = { "Si", "No" };
+                    var selectedValue = JOptionPane.showOptionDialog(null,
+                      "El costo total es: $ " + Float.toString(precioFinal) + " Aceptar", "Total",
+                      0, 3, null, possibleValues, possibleValues[0]);
+                    if (selectedValue == 0){
+                      EditarProducto editar = new EditarProducto();
+                      String[] editarCantidadArr = {result[0], result[1], result[2], 
+                          result[3], result[4],  Integer.toString(existenciaFinal)}; 
+                      editar.editar(ID, editarCantidadArr);
+                      JOptionPane.showMessageDialog(null, "Cantidad agregada correctamente.");
+
+                      MenuPrincipal ventanabienvenida = new MenuPrincipal();
+                      ventanabienvenida.setBounds(0,0,350,450);
+                      ventanabienvenida.setVisible(true);
+                      ventanabienvenida.setResizable(false);
+                      ventanabienvenida.setLocationRelativeTo(null);
+                      this.setVisible(false);
+
+                    }
+                  }
+                }catch(Exception e2){
+                  JOptionPane.showMessageDialog(null, e2);
+                }
+              }
+
+
             //InsertProduct insert = new InsertProduct();
             //insert.insert(ID, Nombre, Marca, Precio, Categoria, Gamma, Existencia);
            }
