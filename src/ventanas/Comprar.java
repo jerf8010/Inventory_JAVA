@@ -1,7 +1,6 @@
 package ventanas;
 import connection_db.BuscarProducto;
 import connection_db.EditarProducto;
-import connection_db.InsertProduct;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -9,8 +8,8 @@ import java.awt.*;
 
 public class Comprar extends JFrame implements ActionListener{
 
-  private JTextField textfield1, textfield2, textfield3, textfield4, textfield5, textfield6, textfield7;
-  private JLabel label1, label2, label3, label4, label5, label6, label7;
+  private JTextField textfield1, textfield2;
+  private JLabel label1, label2;
   private JButton boton1, boton2;
   public static String texto = "";  
 
@@ -105,11 +104,11 @@ public class Comprar extends JFrame implements ActionListener{
                       editar.editar(ID, editarCantidadArr);
                       JOptionPane.showMessageDialog(null, "Cantidad agregada correctamente.");
 
-                      MenuPrincipal ventanabienvenida = new MenuPrincipal();
-                      ventanabienvenida.setBounds(0,0,350,450);
-                      ventanabienvenida.setVisible(true);
-                      ventanabienvenida.setResizable(false);
-                      ventanabienvenida.setLocationRelativeTo(null);
+                      IngresarFactura ventanaFactura = new IngresarFactura(ID, Float.toString(precioFinal));
+                      ventanaFactura.setBounds(0,0,500,600);
+                      ventanaFactura.setVisible(true);
+                      ventanaFactura.setResizable(false);
+                      ventanaFactura.setLocationRelativeTo(null);
                       this.setVisible(false);
 
                     }
